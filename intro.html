@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro to Knockout.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="./index.html">
+            <img src="./koLogo.png" width="150" height="45" class="d-inline-block align-top" alt="">
+            Project 
+        </a>
+        <form class="form-inline my-2 my-lg-0">
+            <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+    <div class="container-fluid">
+        <h1 data-bind="visible: firstName() && lastName()">Welcome <span data-bind="text: firstName"></span> <span data-bind="text: lastName"></span></h1>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                <h2>User List</h2>
+                <ul id="userList" data-bind="foreach: users">
+                    <li data-bind="text: name"></li>
+                </ul>
+
+                <br>
+
+                <h2>User Table</h2>
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: users">
+                        <tr>
+                            <td data-bind="text: $index"></td>
+                            <td data-bind="text: name"></td>
+                            <td><a href="#" class="btn btn-sm btn-danger" data-bind="click: $parent.removeUser">X</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <label for="newUser">New User</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="newUser" data-bind="value: newUser">
+                    <div class="input-group-append">
+                        <input type="button" value="Add" class="btn btn-outline-info" data-bind="click: addUser">
+                    </div>
+                  </div>
+            </div>
+            <div class="col-12 d-sm-none">
+                <hr>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="row">
+                    <h2 class="col-12">Quick Calculator</h2>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-4">
+                        <label for="one">One</label>
+                        <input type="text" id="one" class="form-control" data-bind="value: one">
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <label for="two">Two</label> 
+                        <input type="text" id="two" class="form-control" data-bind="value: two">
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <label for="total">Total</label>
+                        <input type="text" id="total" class="form-control" data-bind="value: total" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewModel() {
+            vm = this;
+
+            //Knockout Intro
+            vm.firstName = ko.observable('Derek');
+            vm.lastName = ko.observable('Drill');
+            vm.newUser = ko.observable('');
+            vm.one = ko.observable('');
+            vm.two = ko.observable('');
+            vm.total = ko.computed(function () {
+                return Number(vm.one()) + Number(vm.two());
+            }, this);
+
+            vm.users = ko.observableArray([
+                {name: 'Derek'},
+                {name: 'Roy'},
+                {name: 'Randall'}
+            ]);
+
+            vm.addUser = function () {
+                if (vm.newUser()) {
+                    vm.users.push({name: vm.newUser() });
+                    vm.newUser('');
+                }
+                else {
+                    Swal.fire('You must enter a new user to add!');
+                }
+            }
+
+            vm.removeUser = function () {
+                vm.users.remove(this);
+            }
+        }
+
+        ko.applyBindings(new viewModel());
+    </script>
+</body>
+</html>

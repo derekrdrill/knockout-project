@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Input Binding</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="./index.html">
+            <img src="./koLogo.png" width="150" height="45" class="d-inline-block align-top" alt="">
+            Project 
+        </a>
+        <form class="form-inline my-2 my-lg-0">
+            <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+      <!-- FORM INPUT BINDING -->
+      <div class="container-fluid" style="padding-top: 30px;">
+        <h2>FORM INPUT BINDING</h2>
+        <hr style="border-top: 1px dashed lightgrey;">
+        <div class="row">
+
+            <!-- Click Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>Click Binding</u></h3>
+                <br>
+                <ul data-bind="foreach: users">
+                    <li>
+                        <span data-bind="text: $data"></span>
+                        <a href="#" class="btn btn-sm btn-danger" data-bind="click: $parent.removeUser">X</a>
+                    </li>
+                    <br>
+                </ul>
+            </div>
+
+            <!-- Event Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>Event Binding</u></h3>
+                <br>
+                <h3><span data-bind="event: { mouseover: addHover, mouseout: removeHover }">Hover here</span></h3>
+                <h5 data-bind="visible: isHover()">You are hovering!</h5>
+            </div>
+
+            <!-- Value Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>Value Binding</u></h3>
+                <br>
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control col-6" data-bind="value: username, valueUpdate: 'afterkeydown' ">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control col-6" data-bind="value: password">
+                <br>
+                <h5 data-bind="visible: username">Logging in <span data-bind="text: username"></span>...</h5>
+            </div>
+
+             <!-- Checked Binding -->
+             <div class="col-12 col-sm-6">
+                <h3><u>Checked Binding</u></h3>
+                <br>
+                <label for="thebox">
+                    The Box
+                    <input type="checkbox" id="thebox" class="form-control" data-bind="checked: checkedBox">
+                </label>
+                <hr>
+                <input type="button" class="btn btn-sm btn-outline-info" data-bind="click: checkIt, value: checkedBox() ? 'Click here to uncheck' : 'Click here to check'">
+            </div>
+
+             <!-- Submit Binding -->
+             <div class="col-12 col-sm-6">
+                <h3><u>Submit Binding</u></h3>
+                <br>
+                <form data-bind="submit: fireSubmit">
+                    <input type="submit" value="Submit" class="btn btn-success">
+                </form>
+            </div>
+
+            <!-- Enable/Disable Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>Enable/Disable Binding</u></h3>
+                <br>
+                <div>
+                    <label for="isCompany">
+                        Register as a company
+                        <input type="checkbox" id="isCompany" class="form-control" data-bind="checked: isCompany">
+                    </label>
+                </div>
+                <label for="name">
+                    Name
+                    <input type="text" id="name" class="form-control" data-bind="value: name, disable: isCompany">
+                </label>
+                <label for="company">
+                    Company
+                    <input type="text" id="company" class="form-control" data-bind="value: company, enable: isCompany">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewModel() {
+            var vm = this;
+
+            //Click Binding
+            vm.users = ko.observableArray([
+                'Joe',
+                'Dan',
+                'Sean'
+            ]);
+
+            vm.removeUser = function (user) {
+                vm.users.remove(user);
+            };
+
+            //Event Binding
+            vm.isHover = ko.observable(false);
+            
+            vm.addHover = function () {
+                this.isHover(true);
+            };
+
+            vm.removeHover = function () {
+                this.isHover(false);
+            };
+
+            //Value Binding
+            vm.username = ko.observable();
+            vm.password = ko.observable();
+
+            //Checked Binding
+            vm.checkedBox = ko.observable(false);
+            vm.checkIt = function () {
+                vm.checkedBox(!vm.checkedBox());
+            };
+
+            //Submit Binding
+            vm.fireSubmit = function () {
+                Swal.fire('Form Submitted');
+            };
+
+            //Enable-Disable Binding
+            vm.isCompany = ko.observable(false);
+            vm.name = ko.observable();
+            vm.company = ko.observable();
+        }
+        
+        ko.applyBindings(new viewModel());
+    </script>
+</body>
+</html>

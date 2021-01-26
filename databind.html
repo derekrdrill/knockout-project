@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data-Binding</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+
+    
+    <style>
+        .highAmount{color: red;}
+    </style>
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="./index.html">
+            <img src="./koLogo.png" width="150" height="45" class="d-inline-block align-top" alt="">
+            Project 
+        </a>
+        <form class="form-inline my-2 my-lg-0">
+            <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+     <!-- DATA BINDING -->
+     <div class="container-fluid" style="padding-top: 30px;">
+        <h2>DATA-BINDING</h2>
+        <hr style="border-top: 1px dashed lightgrey;">
+        <div class="row">
+
+            <!-- Text Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>Text Binding</u></h3>
+                <br>
+                <p>Hello, the year is <strong data-bind="text: year"></strong></p>
+            </div>
+
+            <!-- Visibile Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>Visible Binding</u></h3>
+                <br>
+                <input type="button" class="btn btn-warning" data-bind="click: toggleFunction, value: toggle() ? 'Hide' : 'Unhide'">
+                <p data-bind="visible: toggle()">This is now going to be shown!</p>
+            </div>
+
+            <!-- HTML Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>HTML Binding</u></h3>
+                <br>
+                <div data-bind="html: htmlString"></div>
+            </div>
+
+            <!-- CSS Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>CSS Binding</u></h3>
+                <br>
+                <input class="form-control col-2" type="number" id="amount" data-bind="value: amount">
+                <h4 data-bind="css: { highAmount: amount() > 10 }, text: amount "></h4>
+            </div>
+
+            <!-- Style Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>Style Binding</u></h3>
+                <br>
+                <h4 data-bind="style: {color: amount() >= 20 ? 'red' : 'black'}, text: amount"></h4>
+            </div>
+
+            <!-- ATTR Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>ATTR Binding</u></h3>
+                <br>
+                <a data-bind="attr: { href: url, title: details }">Google</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewModel() {
+            var vm = this;
+            
+            //Text Binding
+            vm.year = ko.observable('2020');
+
+            //Visible Binding
+            vm.toggle = ko.observable(true);
+
+            vm.toggleFunction = function () {
+                vm.toggle(!vm.toggle());
+            };
+
+            //HTML Binding
+            vm.htmlString = ko.observable('<h4>This is a heading</h4><p>This is a paragraph</p>');
+
+            //CSS & Style Binding
+            vm.amount = ko.observable(8);
+
+            //ATTR Binding
+            vm.url = ko.observable('https://www.google.com');
+            vm.details = ko.observable('Go to Google!');
+        }
+
+        ko.applyBindings(new viewModel());
+    </script>
+</body>
+</html>

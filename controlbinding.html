@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Binding</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="./index.html">
+            <img src="./koLogo.png" width="150" height="45" class="d-inline-block align-top" alt="">
+            Project 
+        </a>
+        <form class="form-inline my-2 my-lg-0">
+            <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+    <!-- CONTROL FLOW BINDINGS -->
+    <div class="container-fluid" style="padding-top: 30px;">
+        <h2>CONTROL FLOW BINDING</h2>
+        <hr style="border-top: 1px dashed lightgrey;">
+        <div class="row">
+
+            <!-- For-Each Binding (Table) -->
+            <div class="col-12 col-sm-6">
+                <h3><u>For-Each Binding (Table)</u></h3>
+                <br>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: employees">
+                        <tr data-bind="style: { color: !id ? 'red' : 'black' } ">
+                            <td data-bind="text: id ? id : 'N/A'"></td>
+                            <td data-bind="text: name"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- For-Each Binding (List) -->
+            <div class="col-12 col-sm-6">
+                <h3><u>For-Each Binding (List)</u></h3>
+                <br>
+                <h5>Clients</h5>
+                <ul data-bind="foreach: customers">
+                    <li data-bind="text: name, style: {color: remote ? 'red' : 'black'} "></li>
+                </ul>
+            </div>
+
+            <!-- If Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>If Binding (Table)</u></h3>
+                <br>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: employees">
+                        <tr data-bind="if: id">
+                            <td data-bind="text: id"></td>
+                            <td data-bind="text: name"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- If Not Binding -->
+            <div class="col-12 col-sm-6">
+                <h3><u>If-Not Binding (Table)</u></h3>
+                <br>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: employees">
+                        <tr data-bind="ifnot: id">
+                            <td data-bind="text: id ? id : 'N/A'"></td>
+                            <td data-bind="text: name"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- With Binding -->
+            <div class="col-12">
+                <h3><u>With Binding</u></h3>
+                <h5>City:</h5>
+                <label class="col-2" data-bind="text: city" ></label>
+                <h5>Coordinates:</h5>
+                <div class="col-4 col-sm-2" data-bind="with: coords">
+                    <label for="long">Longitude</label>
+                    <input id="long" type="text" data-bind="value: long" class="form-control" disabled>
+                </div>
+                <div class="col-4 col-sm-2" data-bind="with: coords">
+                    <label for="lat">Latitude</label>
+                    <input type="text" data-bind="value: lat" class="form-control" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewModel() {
+            var vm = this;
+
+            //Control Binding
+
+            //For-Each (Table), If, If-Not
+            vm.employees = ko.observableArray([
+                {id: 1234, name: 'Derek'},
+                {id: null, name: 'Matt B'},
+                {id: 1236, name: 'Matt L'}
+            ]);
+
+            //For-Each List
+            vm.customers = ko.observableArray([
+                {name: 'Eastern Washington University', remote: false},
+                {name: 'Elmhurst College', remote: true},
+                {name: 'Nazareth College', remote: false},
+                {name: 'Northwest Michigan Community College', remote: false},
+                {name: 'Oregon Institute of Technology', remote: true},
+                {name: 'Pitt Community College', remote: true},
+                {name: 'Rockingham Community College', remote: true},
+                {name: 'Santa Barbara City College', remote: false},
+                {name: 'Viterbo University', remote: true},
+            ]);
+
+            //With Binding
+            vm.city = ko.observable('Columbia');
+            vm.coords = ko.observable({
+                long: '34.0007', 
+                lat: '81.0348'
+            });
+        }
+
+        ko.applyBindings(new viewModel());
+    </script>
+</body>
+</html>

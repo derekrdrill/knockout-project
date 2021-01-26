@@ -1,0 +1,68 @@
+//ATTR LOGIC
+data-bind="
+    attr: { readonly: editEmail() ? false : true },
+    value: editEmail() ? '' : origEmail()
+"
+
+data-bind="
+    numeric,
+    addOn: { type: 'prepend', snippet: '$' }
+"
+
+//VALUE LOGIC
+data-bind="value: editEmail() ? '' : origEmail()"
+
+
+
+
+
+Click here to enter different email<br><strong><i>This will affect where a copy is sent</i></strong>
+
+
+
+<div class="row">
+    <div class="col-xs-12 col-sm-5">
+        I request deferred admissions and would like to begin the program in 
+    </div>
+    <div id="termCol" name="termCol" class="col-xs-12 col-sm-3 text-left  ">
+        <div class="text-left  ">
+            <input id="term" name="term" class="text-left  " type="text" />
+        </div>
+    </div> 
+    <div class="col-xs-12 col-sm-4">
+        (please enter the new term requested in the box provided).
+    </div>
+</div>
+
+I request deferred admissions and would like to begin the program in 
+
+<div id="termCol" name="termCol" class="col-xs-12 col-sm-1 text-left  ">
+    <div class="text-left  ">
+        <input id="term" name="term" class="text-left  " type="text" />
+    </div>
+</div> 
+
+(please enter the new term requested in the box provided).
+
+<div id="termCol" name="termCol" class="col-xs-12 col-sm-1 text-left  ">
+    <div class="text-left  ">
+        <input id="term" name="term" class="text-left  " type="text" />
+    </div>
+</div>
+
+
+
+data-bind="dynamicList: true, dynamicListProperties: { addButtonID: 'addRow', removeButtonID: 'removeRow' } "
+
+data-bind="
+    dynamicList: true, 
+    dynamicListProperties: { 
+        addButtonID: 'newAddCourse', 
+        maxLength: 5 
+    } "
+
+
+
+data-bind="dynamicShow: { userParam: ['isNotOriginator'] }"
+data-bind="dynamicReadOnly: { userParam: ['isNotOriginator'] }"
+data-bind="dynamicRequired: { userParam: ['isOriginator', 'Registrar Group'] }"
